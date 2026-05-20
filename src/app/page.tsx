@@ -12,7 +12,7 @@ import Image from 'next/image';
 export default function Home() {
   const [successData, setSuccessData] = useState<RegistrationRecord | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  
   const handleRegistrationSuccess = (record: RegistrationRecord) => {
     setSuccessData(record);
     setError(null);
