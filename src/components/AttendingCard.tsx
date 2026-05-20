@@ -27,227 +27,250 @@ export default function AttendingCard({ record, onGenerated }: AttendingCardProp
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set high-res 1080x1080 dimensions for download quality
+    // Set high-res 1080x1440 dimensions (3:4 aspect ratio)
     canvas.width = 1080;
-    canvas.height = 1080;
+    canvas.height = 1440;
 
-    // Draw Light/White Background Gradient
-    const bgGradient = ctx.createLinearGradient(0, 0, 1080, 1080);
-    bgGradient.addColorStop(0, '#FFFFFF');
-    bgGradient.addColorStop(0.6, '#F8FAFC');
-    bgGradient.addColorStop(1, '#F1F5F9');
-    ctx.fillStyle = bgGradient;
-    ctx.fillRect(0, 0, 1080, 1080);
+    // Load both Logo and User Avatar Image before drawing
+    const logoImg = new Image();
+    logoImg.src = "/fresh.png";
+    logoImg.onload = () => {
+      const img = new Image();
+      img.src = record.photo;
+      img.onload = () => {
+        // Draw Light/White Background Gradient
+        const bgGradient = ctx.createLinearGradient(0, 0, 1080, 1440);
+        bgGradient.addColorStop(0, '#FFFFFF');
+        bgGradient.addColorStop(0.6, '#F8FAFC');
+        bgGradient.addColorStop(1, '#F1F5F9');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, 1080, 1440);
 
-    // Draw Decorative Neon Glow Circular Lights (Soft/Translucent in light mode)
-    const glow1 = ctx.createRadialGradient(200, 200, 50, 200, 200, 450);
-    glow1.addColorStop(0, 'rgba(37, 99, 235, 0.08)'); // Soft electric blue
-    glow1.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = glow1;
-    ctx.beginPath();
-    ctx.arc(200, 200, 450, 0, Math.PI * 2);
-    ctx.fill();
+        // Draw Decorative Neon Glow Circular Lights (Soft/Translucent in light mode)
+        const glow1 = ctx.createRadialGradient(200, 200, 50, 200, 200, 450);
+        glow1.addColorStop(0, 'rgba(37, 99, 235, 0.08)'); // Soft electric blue
+        glow1.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = glow1;
+        ctx.beginPath();
+        ctx.arc(200, 200, 450, 0, Math.PI * 2);
+        ctx.fill();
 
-    const glow2 = ctx.createRadialGradient(880, 880, 50, 880, 880, 450);
-    glow2.addColorStop(0, 'rgba(6, 182, 212, 0.08)'); // Soft cyan
-    glow2.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = glow2;
-    ctx.beginPath();
-    ctx.arc(880, 880, 450, 0, Math.PI * 2);
-    ctx.fill();
+        const glow2 = ctx.createRadialGradient(880, 1240, 50, 880, 1240, 450);
+        glow2.addColorStop(0, 'rgba(6, 182, 212, 0.08)'); // Soft cyan
+        glow2.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = glow2;
+        ctx.beginPath();
+        ctx.arc(880, 1240, 450, 0, Math.PI * 2);
+        ctx.fill();
 
-    // Draw Tech Grids in ultra-light grey
-    ctx.strokeStyle = 'rgba(15, 23, 42, 0.025)';
-    ctx.lineWidth = 1;
-    const gridSize = 60;
-    for (let x = 0; x < canvas.width; x += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, canvas.height);
-      ctx.stroke();
-    }
-    for (let y = 0; y < canvas.height; y += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(canvas.width, y);
-      ctx.stroke();
-    }
+        // Draw Tech Grids in ultra-light grey
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.025)';
+        ctx.lineWidth = 1;
+        const gridSize = 60;
+        for (let x = 0; x < canvas.width; x += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < canvas.height; y += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+          ctx.stroke();
+        }
 
-    // Draw Sleek Accent Shapes/Corner Borders (Vibrant light mode blue/cyan colors)
-    ctx.strokeStyle = '#2563EB'; // Vibrant Blue
-    ctx.lineWidth = 4;
-    
-    // Top Left Corner
-    ctx.beginPath();
-    ctx.moveTo(40, 120);
-    ctx.lineTo(40, 40);
-    ctx.lineTo(120, 40);
-    ctx.stroke();
+        // Draw Sleek Accent Shapes/Corner Borders (Vibrant light mode blue/cyan colors)
+        ctx.strokeStyle = '#2563EB'; // Vibrant Blue
+        ctx.lineWidth = 4;
+        
+        // Top Left Corner
+        ctx.beginPath();
+        ctx.moveTo(40, 120);
+        ctx.lineTo(40, 40);
+        ctx.lineTo(120, 40);
+        ctx.stroke();
 
-    // Top Right Corner
-    ctx.strokeStyle = '#06B6D4'; // Teal/Cyan
-    ctx.beginPath();
-    ctx.moveTo(1040, 120);
-    ctx.lineTo(1040, 40);
-    ctx.lineTo(960, 40);
-    ctx.stroke();
+        // Top Right Corner
+        ctx.strokeStyle = '#06B6D4'; // Teal/Cyan
+        ctx.beginPath();
+        ctx.moveTo(1040, 120);
+        ctx.lineTo(1040, 40);
+        ctx.lineTo(960, 40);
+        ctx.stroke();
 
-    // Bottom Left Corner
-    ctx.strokeStyle = '#06B6D4';
-    ctx.beginPath();
-    ctx.moveTo(40, 960);
-    ctx.lineTo(40, 1040);
-    ctx.lineTo(120, 1040);
-    ctx.stroke();
+        // Bottom Left Corner
+        ctx.strokeStyle = '#06B6D4';
+        ctx.beginPath();
+        ctx.moveTo(40, 1360);
+        ctx.lineTo(40, 1400);
+        ctx.lineTo(120, 1400);
+        ctx.stroke();
 
-    // Bottom Right Corner
-    ctx.strokeStyle = '#2563EB';
-    ctx.beginPath();
-    ctx.moveTo(1040, 960);
-    ctx.lineTo(1040, 1040);
-    ctx.lineTo(960, 1040);
-    ctx.stroke();
+        // Bottom Right Corner
+        ctx.strokeStyle = '#2563EB';
+        ctx.beginPath();
+        ctx.moveTo(1040, 1360);
+        ctx.lineTo(1040, 1400);
+        ctx.lineTo(960, 1400);
+        ctx.stroke();
 
-    // Load User Avatar Image
-    const img = new Image();
-    img.src = record.photo;
-    img.onload = () => {
-      // 1. Draw User Avatar with Neon Borders & Glow
-      const avatarX = 540;
-      const avatarY = 475;
-      const avatarR = 210;
+        // 1. Draw User Avatar with Neon Borders & Glow
+        const avatarX = 540;
+        const avatarY = 665;
+        const avatarR = 230;
 
-      // Draw Avatar Shadow/Glow (Soft shadow in light mode)
-      ctx.save();
-      ctx.shadowColor = 'rgba(37, 99, 235, 0.2)';
-      ctx.shadowBlur = 30;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath();
-      ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
+        // Draw Avatar Shadow/Glow (Soft shadow in light mode)
+        ctx.save();
+        ctx.shadowColor = 'rgba(37, 99, 235, 0.2)';
+        ctx.shadowBlur = 30;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
 
-      // Clip Avatar Image inside the circle
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(avatarX, avatarY, avatarR - 5, 0, Math.PI * 2);
-      ctx.clip();
+        // Clip Avatar Image inside the circle
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(avatarX, avatarY, avatarR - 5, 0, Math.PI * 2);
+        ctx.clip();
 
-      // Center crop logic
-      const imgWidth = img.width;
-      const imgHeight = img.height;
-      const diameter = (avatarR - 5) * 2;
-      const ratio = Math.max(diameter / imgWidth, diameter / imgHeight);
-      const newWidth = imgWidth * ratio;
-      const newHeight = imgHeight * ratio;
-      const xOffset = avatarX - newWidth / 2;
-      const yOffset = avatarY - newHeight / 2;
+        // Center crop logic
+        const imgWidth = img.width;
+        const imgHeight = img.height;
+        const diameter = (avatarR - 5) * 2;
+        const ratio = Math.max(diameter / imgWidth, diameter / imgHeight);
+        const newWidth = imgWidth * ratio;
+        const newHeight = imgHeight * ratio;
+        const xOffset = avatarX - newWidth / 2;
+        const yOffset = avatarY - newHeight / 2;
 
-      ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight);
-      ctx.restore();
+        ctx.drawImage(img, xOffset, yOffset, newWidth, newHeight);
+        ctx.restore();
 
-      // Draw Dual-ring borders around avatar
-      ctx.lineWidth = 6;
-      ctx.strokeStyle = '#2563EB'; // Vibrant Blue
-      ctx.beginPath();
-      ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2);
-      ctx.stroke();
+        // Draw Dual-ring borders around avatar
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = '#2563EB'; // Vibrant Blue
+        ctx.beginPath();
+        ctx.arc(avatarX, avatarY, avatarR, 0, Math.PI * 2);
+        ctx.stroke();
 
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#06B6D4'; // Cyan
-      ctx.beginPath();
-      ctx.arc(avatarX, avatarY, avatarR + 8, 0, Math.PI * 2);
-      ctx.stroke();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#06B6D4'; // Cyan
+        ctx.beginPath();
+        ctx.arc(avatarX, avatarY, avatarR + 8, 0, Math.PI * 2);
+        ctx.stroke();
 
-      // 2. Draw Text and Info
-      // Event Title "FRESH '26" (Slate dark text)
-      ctx.textAlign = 'center';
-      
-      ctx.save();
-      ctx.font = 'bold 85px sans-serif';
-      ctx.fillStyle = '#0F172A';
-      ctx.fillText("FRESH '26", 540, 150);
-      ctx.restore();
+        // 2. Draw Text and Info
+        ctx.textAlign = 'center';
+        
+        // "I WILL BE ATTENDING" banner at the very top (larger & more prominent)
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.05)';
+        ctx.strokeStyle = 'rgba(37, 99, 235, 0.22)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(140, 50, 800, 90, 45);
+        ctx.fill();
+        ctx.stroke();
 
-      // Subtitle
-      ctx.font = 'bold 24px monospace';
-      ctx.fillStyle = '#0284C7';
-      ctx.letterSpacing = '8px';
-      ctx.fillText("YOUTH SUMMIT", 540, 200);
+        ctx.save();
+        ctx.font = 'bold 36px sans-serif';
+        ctx.fillStyle = '#1D4ED8'; // Royal dark blue
+        ctx.textBaseline = 'middle';
+        ctx.fillText(" I WILL BE ATTENDING ", 540, 95);
+        ctx.restore();
 
-      // "I WILL BE ATTENDING" badge/banner in light blue colors
-      ctx.fillStyle = 'rgba(37, 99, 235, 0.05)';
-      ctx.strokeStyle = 'rgba(37, 99, 235, 0.22)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.roundRect(320, 225, 440, 48, 24);
-      ctx.fill();
-      ctx.stroke();
+        // Draw Event Logo Image
+        const logoSize = 160;
+        ctx.drawImage(logoImg, 540 - logoSize / 2, 175, logoSize, logoSize);
 
-      ctx.font = 'bold 20px sans-serif';
-      ctx.fillStyle = '#1D4ED8'; // Royal dark blue
-      ctx.fillText("⭐ I WILL BE ATTENDING ⭐", 540, 256);
+        // Subtitle - STATE CONGRESS
+        ctx.save();
+        ctx.font = 'bold 24px monospace';
+        ctx.fillStyle = '#0284C7';
+        ctx.letterSpacing = '3px';
+        ctx.fillText("ANNUAL STATE CONGRESS", 540, 375);
+        ctx.restore();
 
-      // User's Name (Dark Slate text)
-      ctx.font = 'bold 48px sans-serif';
-      ctx.fillStyle = '#0F172A';
-      ctx.fillText(record.name, 540, 755);
+        // User's Name (Dark Slate text)
+        ctx.font = 'bold 58px sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.letterSpacing = '2px';
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText(record.name, 540, 975);
 
-      // User's Institution & Location Tagline
-      ctx.font = '500 24px sans-serif';
-      ctx.fillStyle = '#475569';
-      const locationText = record.member_type === 'Member' 
-        ? `${record.center} Center, ${record.state}` 
-        : `${record.location}`;
-      ctx.fillText(`${record.institution} | ${locationText}`, 540, 800);
+        // User's Designation (Primary Status)
+        ctx.font = 'bold 26px sans-serif';
+        ctx.fillStyle = '#475569';
+        let statusText = record.status;
+        if (statusText === 'Staff') statusText = 'Staff / Professional';
+        if (statusText === 'Corper') statusText = 'Corper (NYSC)';
+        ctx.fillText(statusText.toUpperCase(), 540, 1080);
 
-      // Status Badge Capsule (Pastel cyan capsule with teal text)
-      const badgeText = `${record.status.toUpperCase()} • ${record.member_type.toUpperCase()}`;
-      ctx.font = 'bold 18px monospace';
-      const badgeWidth = ctx.measureText(badgeText).width + 40;
-      
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
-      ctx.strokeStyle = '#06B6D4';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(540 - badgeWidth / 2, 830, badgeWidth, 36, 18);
-      ctx.fill();
-      ctx.stroke();
+        // Status Badge Capsule (Institution • Location)
+        const locationText = record.member_type === 'Member' 
+          ? `${record.center}, ${record.state}` 
+          : `${record.location}`;
+        const badgeText = `${record.institution.toUpperCase()} • ${locationText.toUpperCase()}`;
+        
+        ctx.font = 'bold 18px monospace';
+        const badgeWidth = ctx.measureText(badgeText).width + 40;
+        
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
+        ctx.strokeStyle = '#06B6D4';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(540 - badgeWidth / 2, 1135, badgeWidth, 40, 20);
+        ctx.fill();
+        ctx.stroke();
 
-      ctx.fillStyle = '#0284C7';
-      ctx.fillText(badgeText, 540, 854);
+        ctx.fillStyle = '#0284C7';
+        ctx.fillText(badgeText, 540, 1159);
 
-      // Ticket ID Pass Box (Light Gray / Amber borders)
-      ctx.fillStyle = '#F8FAFC';
-      ctx.strokeStyle = 'rgba(217, 119, 6, 0.35)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.roundRect(340, 905, 400, 80, 12);
-      ctx.fill();
-      ctx.stroke();
+        // Venue & Date Info
+        ctx.save();
+        ctx.font = 'bold 22px monospace';
+        ctx.fillStyle = '#0284C7';
+        ctx.letterSpacing = '3px';
+        ctx.fillText("📅 JUNE 4 - 7, 2026", 540, 1235);
 
-      // Pass ID Label
-      ctx.font = '600 16px monospace';
-      ctx.fillStyle = '#B45309';
-      ctx.fillText("OFFICIAL DELEGATE TICKET", 540, 934);
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillStyle = '#475569';
+        ctx.letterSpacing = '1px';
+        ctx.fillText("📍 DEEPER LIFE CAMPGROUND, EGBEDA, OGBOMOSO", 540, 1285);
+        ctx.restore();
 
-      // Unique Ticket Code
-      ctx.font = 'bold 32px monospace';
-      ctx.fillStyle = '#0F172A';
-      ctx.fillText(record.ticket_number, 540, 968);
+        // Ticket ID Pass Box (Light Gray / Amber borders)
+        // ctx.fillStyle = '#F8FAFC';
+        // ctx.strokeStyle = 'rgba(217, 119, 6, 0.35)';
+        // ctx.lineWidth = 2;
+        // ctx.beginPath();
+        // ctx.roundRect(340, 910, 400, 80, 12);
+        // ctx.fill();
+        // ctx.stroke();
 
-      // Footer Tagline
-      ctx.font = '500 16px sans-serif';
-      ctx.fillStyle = '#94A3B8';
-      ctx.fillText("Are you registered? Register now at fresh26.dclm.org", 540, 1030);
+        // Unique Ticket Code (Vertically Centered)
+        // ctx.save();
+        // ctx.font = 'bold 36px monospace';
+        // ctx.fillStyle = '#0F172A';
+        // ctx.textBaseline = 'middle';
+        // ctx.fillText(record.ticket_number, 540, 950);
+        // ctx.restore();
 
-      // Save Data URL to state for download
-      const url = canvas.toDataURL('image/png');
-      setDownloadUrl(url);
-      setIsGeneratingCard(false);
-      if (onGenerated) {
-        onGenerated(url);
-      }
+        // Footer Tagline
+        ctx.font = '500 16px sans-serif';
+        ctx.fillStyle = '#94A3B8';
+        ctx.fillText("Are you registered? Register now at bit.ly/FRESH2026", 540, 1390);
+
+        // Save Data URL to state for download
+        const url = canvas.toDataURL('image/png');
+        setDownloadUrl(url);
+        setIsGeneratingCard(false);
+        if (onGenerated) {
+          onGenerated(url);
+        }
+      };
     };
   };
 
@@ -265,7 +288,7 @@ export default function AttendingCard({ record, onGenerated }: AttendingCardProp
         </div>
 
         {isGeneratingCard ? (
-          <div className="aspect-square w-full rounded-xl bg-slate-50 flex flex-col items-center justify-center gap-3 border border-slate-200">
+          <div className="aspect-[3/4] w-full rounded-xl bg-slate-50 flex flex-col items-center justify-center gap-3 border border-slate-200">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-xs text-slate-500 uppercase tracking-widest font-mono font-bold">Generating Card...</p>
           </div>
@@ -275,7 +298,7 @@ export default function AttendingCard({ record, onGenerated }: AttendingCardProp
               <img 
                 src={downloadUrl} 
                 alt="My Attending Card" 
-                className="w-full h-auto aspect-square object-contain"
+                className="w-full h-auto aspect-[3/4] object-contain"
               />
               <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all">
                 <a
@@ -292,9 +315,9 @@ export default function AttendingCard({ record, onGenerated }: AttendingCardProp
         )}
       </div>
       
-      <span className="text-[11px] text-slate-500 mt-4 tracking-wider uppercase font-mono font-bold">
-        PNG high-resolution output (1080 x 1080 px)
-      </span>
+      {/* <span className="text-[11px] text-slate-500 mt-4 tracking-wider uppercase font-mono font-bold">
+        PNG high-resolution output (1080 x 1440 px, 3:4 aspect ratio)
+      </span> */}
 
       {/* Expose action button inside card container if needed by parent, or handled externally */}
       {downloadUrl && (

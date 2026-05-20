@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { 
   User, 
   Sparkles, 
@@ -137,9 +138,7 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
     <div className="w-full max-w-2xl animate-fade-in">
       {/* Form Banner */}
       <div className="text-center mb-8">
-        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs text-primary font-bold mb-3">
-          <Sparkles className="w-3 h-3 animate-pulse" /> Live Registration Portal
-        </span>
+        <Image className="mx-auto"  src="/fresh.png" alt="FRESH '26" width={150} height={150} />
         <h2 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-3">
           SECURE YOUR PASS FOR <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary glow-text-primary">FRESH '26</span>
         </h2>
@@ -213,7 +212,7 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
                   required
                   value={form.institution}
                   onChange={handleChange}
-                  placeholder="e.g. University of Lagos or Zenith Bank PLC"
+                  placeholder="e.g. Ladoke Akintola University of Technology"
                   className="w-full glass-input rounded-lg px-3 py-2.5 text-sm"
                 />
               </div>

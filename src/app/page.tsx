@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Award, BookOpen, AlertCircle } from 'lucide-react';
+import { Calendar, Award, BookOpen, AlertCircle, Sparkles } from 'lucide-react';
 import RegistrationForm from '../components/RegistrationForm';
 import RegistrationSuccess from '../components/RegistrationSuccess';
 import { RegistrationRecord } from '../types/registration';
+import Image from 'next/image';
+
+
 
 export default function Home() {
   const [successData, setSuccessData] = useState<RegistrationRecord | null>(null);
@@ -24,21 +27,23 @@ export default function Home() {
     setError(null);
   };
 
+
+
   return (
     <div className="flex-1 w-full min-h-screen flex flex-col justify-between">
       {/* Header Branding */}
       <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center font-bold text-white text-xl shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-            F
-          </div>
+         
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            {/* <h1 className="text-xl font-bold tracking-tight text-slate-900">
               FRESH<span className="text-primary font-mono">'26</span>
             </h1>
             <p className="text-[10px] uppercase tracking-wider text-secondary font-bold -mt-1 font-mono">
               Youth Summit
-            </p>
+            </p> */}
+
+            <Image src="/fresh.png" alt="FRESH '26" width={100} height={100} />
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -82,17 +87,14 @@ export default function Home() {
       {/* Footer Details */}
       <footer className="w-full py-8 border-t border-slate-200 mt-12 bg-white/50 z-10 text-center">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-medium">
-          <p>© 2026 Deeper Christian Life Ministry. All Rights Reserved.</p>
+          <p>© 2026 DLCF Oyo South ICT. All Rights Reserved.</p>
           <div className="flex gap-4">
-            <span className="flex items-center gap-1 text-slate-600">
-              <Award className="w-3.5 h-3.5 text-primary" /> FRESH '26 Summit
-            </span>
-            <span className="flex items-center gap-1 text-slate-600">
-              <BookOpen className="w-3.5 h-3.5 text-secondary" /> Empowering Youths
-            </span>
-          </div>
+             FRESH '26 Congress
+           </div>
         </div>
       </footer>
+
+
     </div>
   );
 }
