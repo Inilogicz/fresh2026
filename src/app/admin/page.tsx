@@ -27,6 +27,8 @@ interface RegistrationRecord {
   id: number;
   ticket_number: string;
   name: string;
+  phone?: string;
+  email?: string;
   gender: string;
   institution: string;
   status: string;
@@ -138,7 +140,7 @@ export default function AdminPage() {
     if (registrations.length === 0) return;
 
     const headers = [
-      'Ticket Number', 'Full Name', 'Gender', 'Institution', 'Status', 
+      'Ticket Number', 'Full Name', 'Phone Number', 'Email Address', 'Gender', 'Institution', 'Status', 
       'Academic Level', 'Department', 'Membership Type', 'State', 'Region', 
       'Center', 'Membership Role', 'Denomination', 'Visitor Location', 
       'Expectations', 'Registration Date'
@@ -147,6 +149,8 @@ export default function AdminPage() {
     const rows = registrations.map(r => [
       r.ticket_number,
       `"${r.name.replace(/"/g, '""')}"`,
+      `"${(r.phone || '').replace(/"/g, '""')}"`,
+      `"${(r.email || '').replace(/"/g, '""')}"`,
       r.gender,
       `"${r.institution.replace(/"/g, '""')}"`,
       r.status,
@@ -518,18 +522,6 @@ export default function AdminPage() {
                                   >
                                     {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                                   </button>
-                                  <button
-                                    onClick={() => handleDelete(r.id)}
-                                    disabled={isDeleting === r.id}
-                                    className="p-1 rounded hover:bg-red-500/10 text-slate-400 hover:text-red-600 disabled:opacity-50 cursor-pointer"
-                                    title="Delete Record"
-                                  >
-                                    {isDeleting === r.id ? (
-                                      <Loader2 className="w-4 h-4 animate-spin text-red-500" />
-                                    ) : (
-                                      <Trash2 className="w-4 h-4" />
-                                    )}
-                                  </button>
                                 </div>
                               </td>
                             </tr>
@@ -566,6 +558,14 @@ export default function AdminPage() {
                                         <div>
                                           <span className="text-slate-400 block font-medium">Gender</span>
                                           <span className="font-bold text-slate-900">{r.gender}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-slate-400 block font-medium">Phone Number</span>
+                                          <span className="font-bold text-slate-900">{r.phone || 'N/A'}</span>
+                                        </div>
+                                        <div>
+                                          <span className="text-slate-400 block font-medium">Email Address</span>
+                                          <span className="font-bold text-slate-900 break-all">{r.email || 'N/A'}</span>
                                         </div>
                                         <div className="col-span-2">
                                           <span className="text-slate-400 block font-medium">Institution / Workplace</span>

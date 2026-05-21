@@ -2,6 +2,8 @@ export interface RegistrationRecord {
   id: number;
   ticket_number: string;
   name: string;
+  phone?: string;
+  email?: string;
   gender: string;
   institution: string;
   status: string;
@@ -21,6 +23,8 @@ export interface RegistrationRecord {
 
 export interface RegistrationFormData {
   name: string;
+  phone: string;
+  email: string;
   gender: string;
   institution: string;
   status: string;

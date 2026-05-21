@@ -22,6 +22,8 @@ export async function GET(request: Request) {
         id, 
         ticket_number, 
         name, 
+        phone,
+        email,
         gender, 
         institution, 
         status, 
@@ -56,41 +58,8 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-    const password = searchParams.get('password');
-
-    // Simple security gate
-    if (password !== getAdminPassword()) {
-      return NextResponse.json({
-        success: false,
-        error: 'Unauthorized access. Invalid password.'
-      }, { status: 401 });
-    }
-
-    if (!id) {
-      return NextResponse.json({
-        success: false,
-        error: 'Missing registration ID.'
-      }, { status: 400 });
-    }
-
-    // Delete registration from database
-    await sql`
-      DELETE FROM registrations WHERE id = ${parseInt(id)};
-    `;
-
-    return NextResponse.json({
-      success: true,
-      message: 'Registration deleted successfully!'
-    });
-
-  } catch (error: any) {
-    console.error('Failed to delete registration:', error);
-    return NextResponse.json({
-      success: false,
-      error: error.message || 'An error occurred while deleting registration.'
-    }, { status: 500 });
-  }
+  return NextResponse.json({
+    success: false,
+    error: 'Record deletion has been permanently disabled in production for security and data integrity.'
+  }, { status: 405 });
 }

@@ -23,9 +23,15 @@ export async function GET() {
         location VARCHAR(255),
         expectations TEXT,
         photo TEXT NOT NULL,
+        phone VARCHAR(50),
+        email VARCHAR(255),
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
+
+    // Alter table in case it already exists to add phone and email columns
+    await sql`ALTER TABLE registrations ADD COLUMN IF NOT EXISTS phone VARCHAR(50);`;
+    await sql`ALTER TABLE registrations ADD COLUMN IF NOT EXISTS email VARCHAR(255);`;
 
     // Verify connection by fetching table count
     const countResult = await sql`SELECT COUNT(*) FROM registrations;`;

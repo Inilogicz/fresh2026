@@ -6,6 +6,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       name,
+      phone,
+      email,
       gender,
       institution,
       status, // 'Staff', 'Student', 'Corper'
@@ -23,10 +25,10 @@ export async function POST(request: Request) {
     } = body;
 
     // 1. Validation
-    if (!name || !gender || !institution || !status || !member_type || !photo) {
+    if (!name || !phone || !email || !gender || !institution || !status || !member_type || !photo) {
       return NextResponse.json({
         success: false,
-        error: 'Missing required fields: Name, Gender, Institution, Status, Member Type, or Photo is required.'
+        error: 'Missing required fields: Name, Phone, Email, Gender, Institution, Status, Member Type, or Photo is required.'
       }, { status: 400 });
     }
 
@@ -85,6 +87,8 @@ export async function POST(request: Request) {
       INSERT INTO registrations (
         ticket_number,
         name,
+        phone,
+        email,
         gender,
         institution,
         status,
@@ -102,6 +106,8 @@ export async function POST(request: Request) {
       ) VALUES (
         ${ticketNumber},
         ${name},
+        ${phone},
+        ${email},
         ${gender},
         ${institution},
         ${status},

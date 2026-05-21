@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { Calendar, Award, BookOpen, AlertCircle, Sparkles } from 'lucide-react';
 import RegistrationForm from '../components/RegistrationForm';
 import RegistrationSuccess from '../components/RegistrationSuccess';
-import { RegistrationRecord } from '../types/registration';
 import Image from 'next/image';
+import Link from 'next/link';
+import { RegistrationRecord } from '../types/registration';
 
 
 
