@@ -263,7 +263,10 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
                   <option value="" disabled className="text-gray-400">Select Status</option>
                   <option value="Staff" className="text-slate-900">Staff / Professional</option>
                   <option value="Student" className="text-slate-900">Student</option>
+                  <option value="Graduate" className="text-slate-900">Graduate</option>
+                  <option value="Postgraduate" className="text-slate-900">Postgraduate</option>
                   <option value="Corper" className="text-slate-900">Corper (NYSC)</option>
+                  <option value="Non-Student" className="text-slate-900">Non-Student</option>
                 </select>
               </div>
             </div>

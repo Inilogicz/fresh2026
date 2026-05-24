@@ -197,8 +197,11 @@ export default function AdminPage() {
   // Calculate Statistics
   const totalCount = registrations.length;
   const studentCount = registrations.filter(r => r.status === 'Student').length;
-  const staffCount = registrations.filter(r => r.status === 'Staff').length;
+  const postgraduateCount = registrations.filter(r => r.status === 'Postgraduate').length;
+  const graduateCount = registrations.filter(r => r.status === 'Graduate').length;
   const corperCount = registrations.filter(r => r.status === 'Corper').length;
+  const staffCount = registrations.filter(r => r.status === 'Staff').length;
+  const nonStudentCount = registrations.filter(r => r.status === 'Non-Student').length;
   const memberCount = registrations.filter(r => r.member_type === 'Member').length;
   const visitorCount = registrations.filter(r => r.member_type === 'Visitor').length;
   const maleCount = registrations.filter(r => r.gender === 'Male').length;
@@ -334,32 +337,30 @@ export default function AdminPage() {
                     {maleCount}M • {femaleCount}F
                   </span>
                 </div>
-              </div>
-
-              {/* Stat: Academic Status */}
+              </div>              {/* Stat: Academic Status */}
               <div className="glass-panel p-5 rounded-xl flex items-center gap-4 bg-white">
                 <div className="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
                   <GraduationCap className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Students Count</span>
-                  <span className="text-2xl font-black text-slate-900">{studentCount}</span>
+                  <span className="text-2xl font-black text-slate-900">{studentCount + postgraduateCount}</span>
                   <span className="text-[9px] text-slate-400 block mt-0.5 font-mono font-bold">
-                    {Math.round((studentCount / (totalCount || 1)) * 100)}% of total
+                    {studentCount} Undergrad • {postgraduateCount} Postgrad
                   </span>
                 </div>
               </div>
-
-              {/* Stat: Corpers / Professionals */}
+ 
+              {/* Stat: Graduates & Corpers */}
               <div className="glass-panel p-5 rounded-xl flex items-center gap-4 bg-white">
-                <div className="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-200 flex items-center justify-center shrink-0">
-                  <Briefcase className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 rounded-lg bg-sky-500/10 border border-sky-200 flex items-center justify-center shrink-0">
+                  <Briefcase className="w-6 h-6 text-sky-600" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Corpers / Staff</span>
-                  <span className="text-2xl font-black text-slate-900">{corperCount + staffCount}</span>
+                  <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Graduates & Corpers</span>
+                  <span className="text-2xl font-black text-slate-900">{graduateCount + corperCount}</span>
                   <span className="text-[9px] text-slate-400 block mt-0.5 font-mono font-bold">
-                    {corperCount} Corpers • {staffCount} Staff
+                    {graduateCount} Grads • {corperCount} Corpers
                   </span>
                 </div>
               </div>
@@ -404,8 +405,11 @@ export default function AdminPage() {
                 >
                   <option value="">All Statuses</option>
                   <option value="Student">Student</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                  <option value="Graduate">Graduate</option>
                   <option value="Corper">Corper</option>
                   <option value="Staff">Staff</option>
+                  <option value="Non-Student">Non-Student</option>
                 </select>
               </div>
 
@@ -500,8 +504,11 @@ export default function AdminPage() {
                               <td className="py-4 px-4">
                                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                                   r.status === 'Student' ? 'bg-secondary/10 text-secondary border border-secondary/20' :
+                                  r.status === 'Postgraduate' ? 'bg-indigo-500/10 text-indigo-700 border border-indigo-500/20' :
+                                  r.status === 'Graduate' ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' :
+                                  r.status === 'Corper' ? 'bg-sky-500/10 text-sky-700 border border-sky-500/20' :
                                   r.status === 'Staff' ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20' :
-                                  'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20'
+                                  'bg-slate-500/10 text-slate-700 border border-slate-500/20'
                                 }`}>
                                   {r.status}
                                 </span>
