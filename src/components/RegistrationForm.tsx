@@ -58,6 +58,56 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
     }));
   };
 
+// Helper function to compress images client-side before sending to the backend API.
+// This prevents Vercel's 4.5MB Serverless Function payload limit error (HTTP 413)
+// and optimizes database storage and page load times.
+const compressImage = (base64Str: string, maxWidth = 800, maxHeight = 800, quality = 0.82): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      // Calculate new dimensions preserving aspect ratio
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        resolve(base64Str); // Fallback to original if context not supported
+        return;
+      }
+
+      // Fill with a white background to support transparent PNG conversion to JPEG cleanly
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Get compressed JPEG base64 string
+      const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+      resolve(compressedBase64);
+    };
+    img.onerror = (err) => {
+      reject(err);
+    };
+  });
+};
+
   // Handle Photo File Upload
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,8 +121,18 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setPhotoPreview(base64String);
-      setForm(prev => ({ ...prev, photo: base64String }));
+      
+      // Compress the image client-side to keep payloads lightweight, preventing 413 errors on Vercel
+      compressImage(base64String, 800, 800, 0.82)
+        .then((compressed) => {
+          setPhotoPreview(compressed);
+          setForm(prev => ({ ...prev, photo: compressed }));
+        })
+        .catch((err) => {
+          console.error('Image compression failed, falling back to original:', err);
+          setPhotoPreview(base64String);
+          setForm(prev => ({ ...prev, photo: base64String }));
+        });
     };
     reader.readAsDataURL(file);
   };
