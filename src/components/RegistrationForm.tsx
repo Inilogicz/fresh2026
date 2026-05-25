@@ -102,8 +102,8 @@ const compressImage = (base64Str: string, maxWidth = 800, maxHeight = 800, quali
       const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
       resolve(compressedBase64);
     };
-    img.onerror = (err) => {
-      reject(err);
+    img.onerror = () => {
+      reject(new Error('Failed to load image for compression'));
     };
   });
 };
