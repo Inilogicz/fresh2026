@@ -63,7 +63,7 @@ export default function RegistrationForm({ onSuccess, onError }: RegistrationFor
 // and optimizes database storage and page load times.
 const compressImage = (base64Str: string, maxWidth = 800, maxHeight = 800, quality = 0.82): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const img = new Image();
+    const img = document.createElement('img');
     img.src = base64Str;
     img.onload = () => {
       const canvas = document.createElement('canvas');
