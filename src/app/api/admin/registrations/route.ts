@@ -16,7 +16,26 @@ export async function GET(request: Request) {
       }, { status: 401 });
     }
 
-    // Fetch all registrations
+    const id = searchParams.get('id');
+
+    if (id) {
+      // Fetch only the photo for the specified registration record
+      const result = await sql`
+        SELECT photo FROM registrations WHERE id = ${id};
+      `;
+      if (result.length === 0) {
+        return NextResponse.json({
+          success: false,
+          error: 'Registration record not found.'
+        }, { status: 404 });
+      }
+      return NextResponse.json({
+        success: true,
+        photo: result[0].photo
+      });
+    }
+
+    // Fetch all registrations (excluding photo to keep payload lightweight)
     const registrations = await sql`
       SELECT 
         id, 
@@ -37,7 +56,6 @@ export async function GET(request: Request) {
         denomination, 
         location, 
         expectations, 
-        photo,
         created_at 
       FROM registrations 
       ORDER BY created_at DESC;

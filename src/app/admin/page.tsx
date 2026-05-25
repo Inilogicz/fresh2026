@@ -42,7 +42,7 @@ interface RegistrationRecord {
   denomination?: string;
   location?: string;
   expectations?: string;
-  photo: string;
+  photo?: string;
   created_at: string;
 }
 
@@ -179,9 +179,26 @@ export default function AdminPage() {
     document.body.removeChild(link);
   };
 
-  // Toggle profile expansion
-  const toggleExpand = (id: number) => {
+  // Toggle profile expansion and load photo on demand
+  const toggleExpand = async (id: number) => {
+    const isExpanding = expandedId !== id;
     setExpandedId(prev => prev === id ? null : id);
+
+    if (isExpanding) {
+      const record = registrations.find(r => r.id === id);
+      if (record && !record.photo) {
+        try {
+          const authPassword = localStorage.getItem('fresh_admin_token') || password;
+          const response = await fetch(`/api/admin/registrations?id=${id}&password=${authPassword}`);
+          const data = await response.json();
+          if (response.ok && data.success && data.photo) {
+            setRegistrations(prev => prev.map(r => r.id === id ? { ...r, photo: data.photo } : r));
+          }
+        } catch (err) {
+          console.error('Failed to fetch photo on demand:', err);
+        }
+      }
+    }
   };
 
   // Filter & Search Logic
@@ -541,12 +558,19 @@ export default function AdminPage() {
                                     
                                     {/* Profile Avatar Photo (Col-3) */}
                                     <div className="md:col-span-3 flex flex-col items-center">
-                                      <div className="w-32 h-32 rounded-xl overflow-hidden border border-slate-200 shadow-md relative bg-slate-50">
-                                        <img 
-                                          src={r.photo} 
-                                          alt={`${r.name} profile`}
-                                          className="w-full h-full object-cover"
-                                        />
+                                      <div className="w-32 h-32 rounded-xl overflow-hidden border border-slate-200 shadow-md relative bg-slate-50 flex items-center justify-center">
+                                        {r.photo ? (
+                                          <img 
+                                            src={r.photo} 
+                                            alt={`${r.name} profile`}
+                                            className="w-full h-full object-cover animate-fade-in"
+                                          />
+                                        ) : (
+                                          <div className="flex flex-col items-center justify-center gap-2 text-slate-400">
+                                            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                                            <span className="text-[9px] uppercase font-bold tracking-wider font-mono">Loading Photo...</span>
+                                          </div>
+                                        )}
                                       </div>
                                       <span className="text-[10px] text-slate-400 font-mono mt-2.5 flex items-center gap-1 font-bold">
                                         <Clock className="w-3.5 h-3.5" /> 
